@@ -34,7 +34,7 @@ function getLocation() {
     var add2 = $("#add2").val();
 
     a = $.ajax({
-        url: 'https://api.tomtom.com/search/2/search/' + add1 + '.json?radius=1000&minFuzzyLevel=1&maxFuzzyLevel=2&view=Unified&relatedPois=off&key=Ti1bXZtwMA5Lx8WMxmTIIlLGLZGEKXu4',
+        url: 'https://api.tomtom.com/search/2/search/' + add1 + '.json?limit=1&radius=1000&minFuzzyLevel=1&maxFuzzyLevel=2&view=Unified&relatedPois=off&key=Ti1bXZtwMA5Lx8WMxmTIIlLGLZGEKXu4',
         method: "GET"
     }).done(function(data) {
 
@@ -43,12 +43,12 @@ function getLocation() {
     }).fail(function(error) {});
 
     a = $.ajax({
-        url: 'https://api.tomtom.com/search/2/search/' + add2 + '.json?radius=1000&minFuzzyLevel=1&maxFuzzyLevel=2&view=Unified&relatedPois=off&key=Ti1bXZtwMA5Lx8WMxmTIIlLGLZGEKXu4',
+        url: 'https://api.tomtom.com/search/2/search/' + add2 + '.json?limit=1&radius=1000&minFuzzyLevel=1&maxFuzzyLevel=2&view=Unified&relatedPois=off&key=Ti1bXZtwMA5Lx8WMxmTIIlLGLZGEKXu4',
         method: "GET"
     }).done(function(data) {
 
-        lat2 = data.results[1].position.lat;
-        lon2 = data.results[1].position.lon;
+        lat2 = data.results[0].position.lat;
+        lon2 = data.results[0].position.lon;
 
     }).fail(function(error) {});
 
@@ -74,13 +74,16 @@ function getDirections() {
         var oldLen = 0;
 
         for (var i = 0; i < 99; i++) {
-            var url = 'https://api.tomtom.com/map/1/staticimage?layer=basic&style=main&format=jpg&zoom=12&center=' + data.routes[0].legs[0].points[i].longitude + ',' + data.routes[0].legs[0].points[i].latitude + '&width=512&height=512&view=Unified&key=Ti1bXZtwMA5Lx8WMxmTIIlLGLZGEKXu4';
+	var cLat = data.routes[0].legs[0].points[i].latitude;
+	var cLon = data.routes[0].legs[0].points[i].longitude;
+	var url = 'https://api.tomtom.com/map/1/staticimage?layer=basic&style=main&format=png&zoom=12&center='+ cLon + '%2C%20' + cLat + '&width=512&height=512&view=Unified&key=Ti1bXZtwMA5Lx8WMxmTIIlLGLZGEKXu4';
 
             $("#direction").append("<br><p id='leg'>" + (i + 1) + ". " + data.routes[0].guidance.instructions[i].message + "</p>");
-            $("#direction").append("<img src=" + url + " alt='mapImage'>");
 
             $("#direction").append("<p id='legLength'> Length: " + (data.routes[0].guidance.instructions[i].routeOffsetInMeters - oldLen) + " meters</p>");
             oldLen = data.routes[0].guidance.instructions[i].routeOffsetInMeters;
+
+            $("#direction").append("<img src=" + url + " alt='mapImage'>");
 
             $("#direction").append("<p id='legTime'> Time: " + ((data.routes[0].guidance.instructions[i].travelTimeInSeconds - oldTime) / 60).toFixed(2) + " min</p>");
             oldTime = data.routes[0].guidance.instructions[i].travelTimeInSeconds;
