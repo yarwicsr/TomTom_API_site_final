@@ -40,14 +40,14 @@ a:hover {
 
 
 a:focus {
-		  color: #119DA4;
+  color: #119DA4;
 }
 
 h1 {
     text-align: center;
     font-size: 50px;
-				color: #522A27;
-				margin-bottom: 1%;
+	color: #522A27;
+	margin-bottom: 1%;
 }
 
 ul {
@@ -66,7 +66,7 @@ li {
 img {
     float: right;
     width: 10%;
-				max-width: 105.354px;
+    max-width: 105.354px;
     margin-right: 5%;
 }
 
