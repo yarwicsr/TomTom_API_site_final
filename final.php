@@ -21,6 +21,19 @@ require_once "RestServer.php";
 
 $method=$_REQUEST["method"];
 // example request: http://path/to/resource/rest/api/vi/sayHello?&name=World
+public static function insertData ($location, $sensor, $value){
+try {
+	EXEC_SQL("insert into tempature (location, senseor, value, date) values (?, ?, ?, CURRENT_TIMESTAMP)", $location, $sensor, $value);
+	$retData["status"]=0;
+	$retData["message"]="insert of '$value' for location: '$location' and senser '$sensor' accepted";
+}
+catch (Exception $e) {
+	$retData["status"]=1;
+	$retData["message"]=$e->getMessage();
+}
+return json_encode ($retData);
+}
+
 
 $rest = new RestServer (new final_rest(),$method);
 $rest->handle ();

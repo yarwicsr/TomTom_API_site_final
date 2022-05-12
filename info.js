@@ -6,6 +6,7 @@ var routeType = "";
 var travelMode = "";
 var hilliness = "";
 var URLend = "";
+var data="";
 
 function HomePage() {
     document.location.href = 'index.html';
@@ -81,8 +82,14 @@ function getDirections() {
             $("#direction").append("<p id='legLength'> Length: " + (data.routes[0].guidance.instructions[i].routeOffsetInMeters - oldLen) + " meters</p>");
             oldLen = data.routes[0].guidance.instructions[i].routeOffsetInMeters;
 
-            $("#direction").append("<p id='legTime'> Time: " + (data.routes[0].guidance.instructions[i].travelTimeInSeconds - oldTime) / 60 + " min</p>");
-            oldTime = data.routes[0].guidance.instructions[i].travelTimeInSeconds
+            $("#direction").append("<p id='legTime'> Time: " + ((data.routes[0].guidance.instructions[i].travelTimeInSeconds - oldTime) / 60).toFixed(2) + " min</p>");
+            oldTime = data.routes[0].guidance.instructions[i].travelTimeInSeconds;
+
         }
     }).fail(function(error) {});
+}
+
+function getData() {
+const info = {location: 45056, sensor:"web", value: data};
+return info.data;
 }
